@@ -1,5 +1,6 @@
 const express = require('express');
 const router = require('../database/router');
+const errorHendle = require('../database/middleware/error.handle')
 
 const app = express();
 
@@ -11,5 +12,6 @@ app.get('/', (_request, response) => {
 });
 
 app.use(router.userRouter);
+app.use(errorHendle)
 
 module.exports = app;

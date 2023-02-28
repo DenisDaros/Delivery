@@ -1,10 +1,16 @@
-const { findUser } = require('../services/user.service')
+const { login } = require('../services/user.service')
 
-const find = async (_req, res) => {
-  const findAll = await findUser();
-  return res.status(200).json(findAll);
+const loginUser = async (req, res, next) => {
+  const { email, password } = req.body
+
+  try {
+    const user = await login(email, password)
+    return res.status(200).json(user);
+  } catch (err) {
+    next(err)
+  }
 }
 
 module.exports = {
-  find
+  loginUser
 }
