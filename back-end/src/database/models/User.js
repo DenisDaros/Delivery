@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
       underscored: true,
       tableName: 'users',
+      modelName: 'User'
     });
   
     User.associate = (models) => {
