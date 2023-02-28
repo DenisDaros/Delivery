@@ -1,5 +1,4 @@
 const errorHendle = (err, res) => {
-  console.log(err)
 
   const status = err.status
   const message = err.message

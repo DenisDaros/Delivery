@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Request from '../services/request';
 
 function Login() {
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
-  const PASSWORD_MIN_LENGTH = 6;
+  const PASSWORD_MIN_LENGTH = 5;
 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogged, setIsLogged] = useState(false);
   const [failedTryLogin, setFailedTryLogin] = useState(false);
 
   const validateLoginInputs = () => {
@@ -23,15 +23,12 @@ function Login() {
     event.preventDefault();
 
     try {
-      const { token } = await requestLogin('/login', { email, password });
+      const response = await Request.requestLogin('/login', { email, password });
+      console.log(response);
+      Request.setToken(response);
 
-      setToken(token);
-
-      const { role } = await requestData('/login/validate', { email, password });
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-
+      localStorage.setItem('token', response);
+      navigate('/customer/products');
       setIsLogged(true);
     } catch (error) {
       setFailedTryLogin(true);
@@ -44,7 +41,7 @@ function Login() {
   }, [email, password]);
 
   const isDisabled = validateLoginInputs();
-  if (isLogged) return <Navigate to="/produtos" />;
+  // if (isLogged) return navigate('customer/products');
 
   return (
     <form>
