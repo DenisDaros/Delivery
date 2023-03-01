@@ -29,10 +29,8 @@ function Login() {
 
       localStorage.setItem('token', response);
       navigate('/customer/products');
-      setIsLogged(true);
     } catch (error) {
       setFailedTryLogin(true);
-      setIsLogged(false);
     }
   };
 

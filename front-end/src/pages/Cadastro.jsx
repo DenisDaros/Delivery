@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
-// import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Request from '../services/request';
 
 function Cadastro() {
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
-  const PASSWORD_MIN_LENGTH = 6;
-  const NAME_MAX_LENGTH = 12;
+  const PASSWORD_MIN_LENGTH = 5;
+  const NAME_MIN_LENGTH = 12;
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [failedTryLogin, setFailedTryLogin] = useState(false);
 
   const validateLoginInputs = () => {
     const isEmailValid = EMAIL_REGEX.test(email);
     const isPasswordValid = password.length > PASSWORD_MIN_LENGTH;
-    const isNameValid = name.length < NAME_MAX_LENGTH;
+    const isNameValid = name.length >= NAME_MIN_LENGTH;
     const areAllInputsValid = isEmailValid && isPasswordValid && isNameValid;
     return !areAllInputsValid;
+  };
+
+  const register = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await Request.requestLogin('/register', { email, name, password });
+      console.log(response);
+      Request.setToken(response);
+
+      navigate('/customer/products');
+    } catch (error) {
+      setFailedTryLogin(true);
+    }
   };
 
   const isDisabled = validateLoginInputs();
@@ -54,11 +72,23 @@ function Cadastro() {
       <button
         data-testid="common_register__button-register"
         type="submit"
-        onClick={ (event) => login(event) }
+        onClick={ (event) => register(event) }
         disabled={ isDisabled }
       >
         Cadastrar
       </button>
+      {
+        (failedTryLogin)
+          ? (
+            <p data-testid="common_register__element-invalid_register">
+              {
+                `O endereço de e-mail ou nome já existem.
+                    Por favor, tente novamente.`
+              }
+            </p>
+          )
+          : null
+      }
     </form>
   );
 }

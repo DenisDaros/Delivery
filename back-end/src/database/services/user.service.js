@@ -17,6 +17,21 @@ const login = async (email, password) => {
   return { status: 200, message: token };
 };
 
+const create = async (newUser) => {
+  console.log('chamou')
+  const { name, email, password } = newUser;
+  const codPass = md5(password);
+  const user = await User.findOne({ where: { name, email } })
+
+  if (user) return { status: 409, message: 'invalid fild' }
+
+  const createNewUser = await User.create({ email, name, password: codPass });
+  const { password: _password, ...userWithoutPassword } = createNewUser.dataValues;
+  const token = generateToken(userWithoutPassword)
+  return { status: 201, message: token };
+}
+
 module.exports = {
-  login
+  login,
+  create
 }
