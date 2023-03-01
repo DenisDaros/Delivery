@@ -80,7 +80,7 @@ function Cadastro() {
       {
         (failedTryLogin)
           ? (
-            <p data-testid="common_login__element-invalid-email">
+            <p data-testid="common_register__element-invalid_register">
               {
                 `O endereço de e-mail ou nome já existem.
                     Por favor, tente novamente.`
