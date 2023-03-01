@@ -18,7 +18,6 @@ const login = async (email, password) => {
 };
 
 const create = async (newUser) => {
-  console.log('chamou')
   const { name, email, password } = newUser;
   const codPass = md5(password);
   const user = await User.findOne({ where: { name, email } })
@@ -31,7 +30,14 @@ const create = async (newUser) => {
   return { status: 201, message: token };
 }
 
+const find = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) return { status: 400, message: 'error' };
+  return { status: 200, message: user.name };
+}
+
 module.exports = {
   login,
-  create
+  create,
+  find
 }

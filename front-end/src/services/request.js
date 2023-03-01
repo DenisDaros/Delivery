@@ -8,13 +8,13 @@ const setToken = (token) => {
   api.defaults.headers.common.Authorization = token;
 };
 
-const requestData = async (endpoint) => {
-  const { data } = await api.get(endpoint);
+const requestData = async (endpoint, body) => {
+  const data = await api.get(endpoint, body);
+  console.log(data);
   return data;
 };
 
 const requestLogin = async (endpoint, body) => {
-  console.log('chamou');
   const { data } = await api.post(endpoint, body);
   return data;
 };

@@ -1,0 +1,11 @@
+.common-header {
+  align-items: center;
+  background: #87ce8b;
+  bottom: 2.33%;
+  display: flex;
+  justify-content: space-between;
+  left: 0%;
+  padding: 20px 50px;
+  right: 0%;
+  top: -2.33%;
+}

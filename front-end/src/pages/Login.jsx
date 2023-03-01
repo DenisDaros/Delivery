@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 import Request from '../services/request';
 
 function Login() {
@@ -7,6 +8,7 @@ function Login() {
   const PASSWORD_MIN_LENGTH = 5;
 
   const navigate = useNavigate();
+  const params = useContext(AppContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +26,9 @@ function Login() {
 
     try {
       const response = await Request.requestLogin('/login', { email, password });
-      console.log(response);
+      const name = await Request.requestLogin('/name', { email });
+      params.setUser(name);
+
       Request.setToken(response);
 
       localStorage.setItem('token', response);
