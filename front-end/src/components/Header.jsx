@@ -9,7 +9,6 @@ function Header() {
 
   const logoff = () => {
     localStorage.removeItem('token');
-    // localStorage.removeItem('role');
     navigate('/login');
   };
 
