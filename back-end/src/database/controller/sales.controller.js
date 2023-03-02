@@ -1,7 +1,6 @@
 const salesService  = require('../services/sales.service');
 
 const postSales = async (req, res) => {
-    // const { data: { email } } = req.user;
     const saleData = req.body;
   
     const saleCreated = await salesService.createSale(saleData);
@@ -33,7 +32,6 @@ const patchSale = async (req, res) => {
     
     return res.status(200).json(updated);
 };
-
 
 const deleteSale = async (req, res) => {
     const { id } = req.params;
