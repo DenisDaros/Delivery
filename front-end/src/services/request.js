@@ -14,7 +14,6 @@ const requestData = async (endpoint) => {
 };
 
 const requestLogin = async (endpoint, body) => {
-  console.log('chamou');
   const { data } = await api.post(endpoint, body);
   return data;
 };

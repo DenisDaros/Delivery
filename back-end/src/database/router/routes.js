@@ -1,8 +1,8 @@
 const express = require('express');
 const userController = require('../controller/user.controller')
 const productController = require('../controller/product.controller');
+const sellerController = require('../controller/seller.controller')
 const salesController = require('../controller/sales.controller');
-const sellerController = require('../controller/seller.controller');
 
 const { validateJWT } = require('../auth/verifyJWT');
 
@@ -15,6 +15,8 @@ routers.put('/login/:id', validateJWT, userController.putUser);
 routers.delete('/login/:id', validateJWT, userController.deleteUser);
 
 routers.post('/register', userController.register);
+routers.get('/products', productController.products);
+routers.post('/name', userController.findOne);
 
 routers.get('/products', validateJWT, productController.getProducts);
 routers.get('/products/:id', validateJWT, productController.getProductsById);

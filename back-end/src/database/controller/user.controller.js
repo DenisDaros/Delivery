@@ -45,9 +45,16 @@ const deleteUser = async (req, res) => {
   return { status: 202, message: removed };
 };
 
+const findOne = async (req, res) => {
+  const { email } = req.body;
+  const logedUser = await find(email);
+  return res.status(logedUser.status).json(logedUser.message);
+}
+
 module.exports = {
   loginUser,
   register,
+  findOne
   getUsers,
   getUserById,
   putUser,

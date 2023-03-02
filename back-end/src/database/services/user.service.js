@@ -30,9 +30,13 @@ const create = async (newUser) => {
   return { status: 201, message: token };
 }
 
+const find = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) return { status: 400, message: 'error' };
+  return { status: 200, message: user.name };
+}
 const findUsers = async () => {
   const users = await User.findAll({ exclude: ['password'] });
-
   return { status: 200, message: users };
 };
 
@@ -65,6 +69,7 @@ const destroyUser = async (id) => {
 module.exports = {
   login,
   create,
+  find
   findUsers,
   findUserById,
   updateUserById,
