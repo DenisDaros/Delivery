@@ -6,13 +6,16 @@ const salesController = require('../controller/sales.controller');
 const routers = express.Router();
 
 routers.post('/login', userController.loginUser);
+
 routers.post('/register', userController.register);
+
 routers.get('/products', productController.products);
-routers.post('/customers/order', salesController.postSales);
-routers.get('/customers/order', salesController.getSales);
-routers.get('/customers/order/:id', salesController.getSaleById);
-routers.patch('/customers/order/status/:id', salesController.patchSale);
-routers.delete('/customers/order/:id', salesController.deleteSale);
+
+routers.post('/sales', salesController.postSales);
+routers.get('/sales', salesController.getSales);
+routers.get('/sales/:id', salesController.getSaleById);
+routers.patch('/sales/status/:id', salesController.patchSale);
+routers.delete('/sales/:id', salesController.deleteSale);
 
 
 module.exports = routers;
