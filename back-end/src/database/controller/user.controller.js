@@ -8,7 +8,6 @@ const loginUser = async (req, res, next) => {
 
 const register = async (req, res) => {
   const newUSer = req.body;
-  console.log(newUSer)
   const userCreated = await create(newUSer);
   return res.status(userCreated.status).json(userCreated.message);
 }

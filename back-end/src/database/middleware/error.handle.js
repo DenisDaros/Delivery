@@ -1,4 +1,4 @@
-const errorHendle = (err, res) => {
+const errorHandle = (err, res) => {
 
   const status = err.status
   const message = err.message
@@ -6,4 +6,4 @@ const errorHendle = (err, res) => {
   return res.status(status).json({ error: message })
 }
 
-module.exports = errorHendle;
+module.exports = errorHandle;

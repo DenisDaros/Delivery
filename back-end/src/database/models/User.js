@@ -9,16 +9,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
       underscored: true,
       tableName: 'users',
-      modelName: 'User'
+      modelName: 'User',
     });
   
     User.associate = (models) => {
         User.hasMany(models.Sales, { foreignKey: 'userId', as: 'user' });
-      };
-
-    User.associate = (models) => {
         User.hasMany(models.Sales, { foreignKey: 'sellerId', as: 'seller' });
-    };
+      };
 
     return User;
   };
