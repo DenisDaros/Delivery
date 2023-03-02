@@ -16,4 +16,4 @@ const generateToken = (email, password) => {
 
 module.exports = {
   generateToken,
-}
+};
