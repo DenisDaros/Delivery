@@ -24,6 +24,8 @@ const findSaleById = async (id) => {
       ],
     });
   
+    if (!sale) return res.status(404).json({ message: 'Sale does not exist' });
+
     const products = sale.products.map((p,i) => ({
         name: p.name,
         price: p.price,
@@ -32,7 +34,7 @@ const findSaleById = async (id) => {
 
     const { salesProducts: _, ...saleObject } = sale.dataValues;
 
-    return {...saleObject, products};
+    return { status: 200, message: { ...saleObject, products } };
   };
 
 const createSale = async (body) => {
@@ -48,7 +50,9 @@ const createSale = async (body) => {
         return sale.id;
       });
   
-      return findSaleById(saleCreated);
+      const result = findSaleById(saleCreated);
+
+      return { status: 201, message: result };
       
     } catch (e) {
       console.log(e.message);
@@ -71,21 +75,23 @@ const findSales = async () => {
         ],
     });
 
-    return sales;
+    return { status: 200, message: sales };
   };
 
 const updateSale = async (id, data) => {
     await Sales.update(data, { where: { id } });
     
     const updated = await findSaleById(+id);
-    
-    return updated;
+    if(!updated) return res.status(404).json({ message: 'Not found' });
+
+    return { status: 200, message: updated };
 };
 
 const destroySale = async (id) => {
     const removed = await Sales.destroy({ where: { id } });
-
-    return removed;
+    if(!removed) return res.status(404).json({ message: 'Not found' });
+    
+    return { status: 204, message: removed };
 }
 
   module.exports = {
