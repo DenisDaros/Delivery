@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { getUserByEmail } = require('../services/user.service');
+const { findUserByEmail } = require('../services/user.service');
 
 require('dotenv/config');
 
@@ -15,7 +15,7 @@ const validateJWT = async (req, res, next) => {
 
     const email = decoded.data.email;
 
-    const user = await getUserByEmail(email);
+    const user = await findUserByEmail(email);
 
     req.user = user;
 
