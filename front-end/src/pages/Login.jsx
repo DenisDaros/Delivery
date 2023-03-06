@@ -25,7 +25,7 @@ function Login() {
 
     try {
       const response = await Request.requestLogin('/login', { email, password });
-      Request.setToken(response);
+      Request.setToken(response.token);
       localStorage.saveData('user', response);
       localStorage.saveData('cart', 0);
       navigate('/customer/products');

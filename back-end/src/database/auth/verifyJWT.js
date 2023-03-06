@@ -1,30 +1,27 @@
 const jwt = require('jsonwebtoken');
-const { getUserByEmail } = require('../services/user.service');
+const { findUserByEmail } = require('../services/user.service');
 
 require('dotenv/config');
 
-const secret = process.env.JWT_SECRET || 'secret';
+const secret = process.env.JWT_SECRET || 'secret_key';
 
 const validateJWT = async (req, res, next) => {
-  const token = req.header('Authorization');
-
-  if (!token) throw new Error ({
-    status: 401,
-    message: "Token not found"
-  });
-
   try {
+    const token = req.header('Authorization');
+
+    if (!token) throw new Error('Invalid token or not founded');
+
     const decoded = jwt.verify(token, secret);
 
-    const email = decoded.data.email;
+    const { email } = decoded.data.email;
 
-    const user = await getUserByEmail(email);
+    const user = await findUserByEmail(email);
 
     req.user = user;
 
     return next();
   } catch (error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: error.message });
   };
 };
 
