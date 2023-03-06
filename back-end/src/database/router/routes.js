@@ -16,7 +16,7 @@ routers.delete('/login/:id', validateJWT, userController.deleteUser);
 
 routers.post('/register', userController.register);
 
-routers.get('/products', validateJWT, productController.getProducts);
+routers.get('/products', productController.getProducts);
 routers.get('/products/:id', validateJWT, productController.getProductsById);
 routers.post('/products', validateJWT, productController.postProduct);
 routers.put('/products/:id', validateJWT, productController.putProduct);

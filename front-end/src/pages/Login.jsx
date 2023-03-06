@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import localStorage from '../services/localStorage';
 import Request from '../services/request';
 
 function Login() {
@@ -24,10 +25,9 @@ function Login() {
 
     try {
       const response = await Request.requestLogin('/login', { email, password });
-      console.log(response);
       Request.setToken(response);
-
-      localStorage.setItem('token', response);
+      localStorage.saveData('user', response);
+      localStorage.saveData('cart', 0);
       navigate('/customer/products');
     } catch (error) {
       setFailedTryLogin(true);
@@ -39,7 +39,6 @@ function Login() {
   }, [email, password]);
 
   const isDisabled = validateLoginInputs();
-  // if (isLogged) return navigate('customer/products');
 
   return (
     <form>

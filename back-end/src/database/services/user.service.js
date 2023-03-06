@@ -14,7 +14,13 @@ const login = async (email, password) => {
 
   const { password: _password, ...userWithoutPassword } = user.dataValues;
   const token = generateToken(userWithoutPassword);
-  return { status: 200, message: token };
+  return { 
+    status: 200, 
+    message: { name: user.name, 
+    email: user.email,
+    role: "customer", 
+    token: token
+  } };
 };
 
 const create = async (newUser) => {
