@@ -4,14 +4,17 @@ import AppContext from './AppContext';
 
 export default function AppProvider({ children }) {
   const [user, setUser] = useState({});
-  const [cart, setCart] = useState();
+  const [cart, setCart] = useState(0);
+  const [cartItens, setCartItens] = useState([]);
 
   const context = useMemo(() => ({
+    cartItens,
     cart,
     user,
     setUser,
     setCart,
-  }), [user, cart]);
+    setCartItens,
+  }), [user, cart, cartItens]);
 
   return (
     <AppContext.Provider value={ context }>

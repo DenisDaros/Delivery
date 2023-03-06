@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppContext from '../context/AppContext';
+import localStorage from '../services/localStorage';
 import Request from '../services/request';
 
 function Login() {
@@ -8,7 +8,7 @@ function Login() {
   const PASSWORD_MIN_LENGTH = 5;
 
   const navigate = useNavigate();
-  const params = useContext(AppContext);
+  // const params = useContext(AppContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,12 +26,9 @@ function Login() {
 
     try {
       const response = await Request.requestLogin('/login', { email, password });
-      const name = await Request.requestLogin('/name', { email });
-      params.setUser(name);
-
       Request.setToken(response);
-
-      localStorage.setItem('token', response);
+      localStorage.saveData('user', response);
+      localStorage.saveData('cart', 0);
       navigate('/customer/products');
     } catch (error) {
       setFailedTryLogin(true);
@@ -43,7 +40,6 @@ function Login() {
   }, [email, password]);
 
   const isDisabled = validateLoginInputs();
-  // if (isLogged) return navigate('customer/products');
 
   return (
     <form>

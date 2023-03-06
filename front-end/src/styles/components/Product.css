@@ -9,17 +9,24 @@
 }
 
 .car-button {
-  width: 200px;
+  width: 230px;
   height: 60px;
   position: fixed;
   border: 0;
   border-radius: 50px;
-  left: 40rem;
-  top: 35rem;
+  left: 55%;
+  top: 90%;
   background-color: rgb(27, 165, 57);
-font-weight: 50;
-font-size: 18px;
-line-height: 42px;
-align-items: center;
-text-align: center;
+  font-size: 18px;
+  line-height: 42px;
+}
+
+.container-page {
+  align-items: center;
+    display: flex;
+    flex-direction: column;
+    left: 0%;
+    margin: 0%;
+    position: absolute;
+    width: 720px;
 }

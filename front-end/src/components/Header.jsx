@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppContext from '../context/AppContext';
+import localStore from '../services/localStorage';
 import '../styles/components/Header.css';
 
 function Header() {
   const navigate = useNavigate();
-  const params = useContext(AppContext);
+  const name = localStore.getData('user');
 
   const logoff = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -17,7 +17,7 @@ function Header() {
       <h3 data-testid="customer_products__element-navbar-link-products">PRODUTOS</h3>
       <h3 data-testid="customer_products__element-navbar-link-orders">MEUS PEDIDOS</h3>
       <h3 data-testid="customer_products__element-navbar-user-full-name">
-        { params.user }
+        { name.name }
       </h3>
       <button
         type="button"

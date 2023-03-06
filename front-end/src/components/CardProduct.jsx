@@ -4,19 +4,27 @@ import AppContext from '../context/AppContext';
 import '../styles/components/CardProduct.css';
 
 function CardProduct({ price, name, img, key }) {
-  const [value, setValue] = useState(0);
+  const [numProduct, setnumProduct] = useState(0);
   const params = useContext(AppContext);
 
   useEffect(() => {
     params.setCart(0);
   }, []);
 
+  // useEffect(() => {
+  //   params.setCartItens([...params.cartItens, {
+  //     name,
+  //     qnt: numProduct,
+  //     subTotal: (Number(price) * numProduct).toFixed(2) }]);
+  // }, [numProduct]);
+
   const rmValue = (newValeu) => {
     const priceConvert = newValeu.replace(',', '.');
     const result = (params.cart - Number(priceConvert));
-    if (value > 0) {
+    if (numProduct > 0) {
       params.setCart(Number(result.toFixed(2)));
-      return setValue(value - 1);
+      setnumProduct(Number(numProduct) - 1);
+      return null;
     }
     return null;
   };
@@ -25,12 +33,21 @@ function CardProduct({ price, name, img, key }) {
     const priceConvert = newValeu.replace(',', '.');
     const result = (Number(params.cart) + Number(priceConvert));
     params.setCart(result.toFixed(2));
-    return setValue(value + 1);
+    setnumProduct(Number(numProduct) + 1);
+    // params.setCartItens([{ name, qnt: numProduct, subTotal: result.toFixed(2) }]);
+    return null;
+  };
+
+  const handleChange = ({ target: { value } }) => {
+    const itemValue = Number(value) * Number(price.replace(',', '.'));
+    const cartValue = itemValue;
+    params.setCart(cartValue.toFixed(2));
+    // params.setCartItens([{ name, qnt: Number(value), subTotal: cartValue.toFixed(2) }]);
+    setnumProduct(value);
   };
 
   return (
     <div className="card-container">
-      {console.log(params)}
       <h3 data-testid={ `customer_products__element-card-price-${key}` }>{ price }</h3>
       <div className="img-container">
         <img
@@ -50,7 +67,13 @@ function CardProduct({ price, name, img, key }) {
         >
           -
         </button>
-        <p data-testid={ `customer_products__input-card-quantity-${key}` }>{ value }</p>
+        <input
+          className="test"
+          type="number"
+          value={ numProduct }
+          onChange={ handleChange }
+          data-testid={ `customer_products__input-card-quantity-${key}` }
+        />
         <button
           onClick={ () => addValue(price) }
           data-testid={ `customer_products__button-card-add-item-${key}` }

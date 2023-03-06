@@ -3,13 +3,12 @@ import AppContext from '../context/AppContext';
 import Request from '../services/request';
 import Header from '../components/Header';
 import CardProduct from '../components/CardProduct';
+import localStorage from '../services/localStorage';
 import '../styles/components/Product.css';
 
 function Products() {
   const params = useContext(AppContext);
-  // const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  // const [cartValue, setcartValue] = useState(0);
 
   const productsApi = async () => {
     try {
@@ -24,22 +23,10 @@ function Products() {
     productsApi();
   }, []);
 
-  const addClick = (value) => {
-    setcartValue(cartValue + value);
-    return null;
-  };
-
-  const rmClick = (value) => {
-    if (cartValue > 0) return setcartValue(cartValue - value);
-    return null;
-  };
-
   const cardProducts = products.map((product, index) => {
     const { name, price, urlImage, id } = product;
     return (
       <CardProduct
-        add={ addClick }
-        rm={ rmClick }
         key={ id }
         index={ index }
         img={ urlImage }
@@ -49,18 +36,10 @@ function Products() {
     );
   });
 
-  // const teste = () => {
-  //   console.log('chamou');
-  //   const string = String(params.cart).replace('.', ',');
-  //   const TRES = 3;
-  //   if (string.length === TRES) return `${String(params.cart).replace('.', ',')}0`;
-  //   if (string.length === 2) return `${String(params.cart).replace('.', ',')},00`;
-  //   return string;
-  // };
-
   return (
     <div className="container-page">
       <Header />
+      {/* { console.log(params.cartItens) } */}
       <div className="container-cards-render">
         {
           (products.length !== 0)
@@ -74,13 +53,18 @@ function Products() {
         <button
           className="car-button"
           type="button"
-          data-testid="customer_products__checkout-bottom-value"
+          data-testid="customer_products__button-cart"
         >
-          Ver Carrinho: R$
-          {' '}
-          {
-            String(params.cart).replace('.', ',')
-          }
+          <span data-testid="customer_products__checkout-bottom-value">
+            Ver Carrinho: R$
+            {' '}
+            {
+              localStorage.saveData('cart', String(params.cart).replace('.', ','))
+            }
+            {
+              String(params.cart).replace('.', ',')
+            }
+          </span>
         </button>
       </div>
     </div>
