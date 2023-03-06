@@ -4,6 +4,7 @@ import './App.css';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Products from './pages/Produtos';
+import Vendedor from './pages/Vendedor';
 import AppProvider from './context/AppProvider';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route exact path="/customer/products" element={ <Products /> } />
             <Route exact path="/register" element={ <Cadastro /> } />
             <Route exact path="/" element={ <Navigate to="/login" /> } />
+            <Route exact path="/seller/orders" element={ <Vendedor /> } />
           </Routes>
         </BrowserRouter>
       </AppProvider>
