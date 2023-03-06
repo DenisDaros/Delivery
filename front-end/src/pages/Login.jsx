@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localStorage from '../services/localStorage';
 import Request from '../services/request';
@@ -8,6 +8,7 @@ function Login() {
   const PASSWORD_MIN_LENGTH = 5;
 
   const navigate = useNavigate();
+  // const params = useContext(AppContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

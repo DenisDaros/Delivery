@@ -1,8 +1,9 @@
-const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/product.service');
+const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/products.service');
 
 const getProducts = async (_req, res) => {
   const result = await findProducts();
-  return res.status(200).json(result);
+  
+  return res.status(result.status).json(result.message);
 };
 
 const getProductsById = async (req, res) => {
@@ -10,7 +11,7 @@ const getProductsById = async (req, res) => {
 
   const product = await findProductById(id);
 
-  return res.status(200).json(product);
+  return res.status(product.status).json(product.message);
 }
 
 const putProduct = async (req, res) => {
@@ -18,18 +19,16 @@ const putProduct = async (req, res) => {
   const data = req.body;
 
   const updated = await updateProductById(id, data);
-  if (!updated) return res.status(404).json({ message: 'Not found' });
-
-  return res.status(200).json(updated);
+  
+  return res.status(updated.status).json(updated.message);
 };
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   const removed = await destroyProduct(id);
-  if(!removed) return res.status(404).json({ message: 'Not found' });
-
-  return { status: 202, message: removed };
+  
+  return { status: removed.status, message: removed.message };
 };
 
 const postProduct = async (req, res) => {
@@ -37,7 +36,7 @@ const postProduct = async (req, res) => {
 
   const created = await createProduct(product);
 
-  return res.status(201).json(created);
+  return res.status(created.status).json(created.message);
 }
 
 module.exports = {

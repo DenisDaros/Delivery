@@ -18,7 +18,7 @@ const login = async (email, password) => {
     status: 200, 
     message: { name: user.name, 
     email: user.email,
-    role: "customer", 
+    role: user.role, 
     token: token
   } };
 };
@@ -33,13 +33,15 @@ const create = async (newUser) => {
   const createNewUser = await User.create({ email, name, password: codPass });
   const { password: _password, ...userWithoutPassword } = createNewUser.dataValues;
   const token = generateToken(userWithoutPassword);
+
   return { status: 201, message: token };
 }
 
-const findUsers = async () => {
-  const users = await User.findAll({ exclude: ['password'] });
+const findUserByEmail = async (email) => {
+  const user = await User.findOne({ where: { email }, exclude: ['password'] });
+  if (!user) return { status: 400, message: 'Error' };
 
-  return { status: 200, message: users };
+  return { status: 200, message: user.name };
 };
 
 const findUserById = async (id) => {
@@ -49,29 +51,31 @@ const findUserById = async (id) => {
       attributes: { exclude: ['password'] }
     });
 
-    if (!user) return { status: 404, message: "Not found" };
-    
+  if (!user) return { status: 404, message: "Not found" };
+
   return { status: 201, message: user };
 };
 
 const updateUserById = async (id, data) => {
   await User.update(data, { where: { id } });
-  
+
   const updated = await findUserById(+id);
+  if(!updated) return res.status(404).json({ message: 'Not found' });
   
   return { status: 200, message: updated };
 };
 
 const destroyUser = async (id) => {
   const removed = await User.destroy({ where: { id } });
-
+  if(!removed) return res.status(404).json({ message: 'Not found' });
+  
   return { status: 202, message: removed };
 };
 
 module.exports = {
   login,
   create,
-  findUsers,
+  findUserByEmail,
   findUserById,
   updateUserById,
   destroyUser,
