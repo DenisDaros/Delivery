@@ -7,9 +7,9 @@ const secret = process.env.JWT_SECRET || 'secret_key';
 
 const validateJWT = async (req, res, next) => {
   try {
-    const token = req.header('Authorization');
+    const token = req.headers.authorization;
 
-    if (!token) throw new Error('Invalid token or not founded');
+    if (!token) return res.status(403).json({ message: 'No credentials sent!' });
 
     const decoded = jwt.verify(token, secret);
 

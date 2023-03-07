@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import AppContext from '../context/AppContext';
 
 function Table({ name, qnt, unitValue, value, index }) {
   const parcialValue = qnt * value;
+  const params = useContext(AppContext);
+
+  const removeItem = (product, valueItem) => {
+    const list = params.cartItens.filter((item) => item.name !== product);
+    const resultValue = params.cart - valueItem;
+    params.setCart(resultValue.toFixed(2));
+    params.setCartItens(list);
+    return null;
+  };
 
   return (
     <div>
@@ -45,12 +55,12 @@ function Table({ name, qnt, unitValue, value, index }) {
           data-testid={ `customer_checkout__element-order-table-sub-total-${index}` }
         >
           { String(parcialValue).replace('.', ',') }
-
         </th>
         <th>
           <button
             type="button"
             data-testid={ `customer_checkout__element-order-table-remove-${index}` }
+            onClick={ () => removeItem(name, parcialValue) }
           >
             Remover
           </button>

@@ -1,6 +1,7 @@
 const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/product.service');
 
 const getProducts = async (_req, res) => {
+  console.log('chamou')
   const result = await findProducts();
   
   return res.status(result.status).json(result.message);

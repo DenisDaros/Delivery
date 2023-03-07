@@ -10,18 +10,11 @@ import '../styles/components/Product.css';
 function Products() {
   const params = useContext(AppContext);
   const [products, setProducts] = useState([]);
-  // const [logged, setLogin] = useState(false);
-
-  // useEffect(() => {
-  //   const user = localStorage.getItem('user');
-  //   setLogin(!!user.token);
-  // }, [logged, setLogin]);
 
   const navigate = useNavigate();
 
   const productsApi = async () => {
     try {
-      // console.log('chamou');
       const response = await Request.requestData('/products');
       setProducts(response);
     } catch (error) {
@@ -46,6 +39,8 @@ function Products() {
     );
   });
 
+  const isDisabled = params.cart === 0;
+
   return (
     <div className="container-page">
       <Header />
@@ -64,13 +59,15 @@ function Products() {
           type="button"
           data-testid="customer_products__button-cart"
           onClick={ () => navigate('/customer/checkout') }
+          disabled={ isDisabled }
         >
-          <span data-testid="customer_products__checkout-bottom-value">
+          <span>
             Ver Carrinho: R$
-            {' '}
-            {
-              localStorage.saveData('cart', String(params.cart).replace('.', ','))
-            }
+          </span>
+          {
+            localStorage.saveData('cart', String(params.cart).replace('.', ','))
+          }
+          <span data-testid="customer_products__checkout-bottom-value">
             {
               String(params.cart).replace('.', ',')
             }
