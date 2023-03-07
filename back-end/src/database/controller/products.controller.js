@@ -1,4 +1,4 @@
-const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/product.service');
+const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/products.service');
 
 const getProducts = async (_req, res) => {
   console.log('chamou')

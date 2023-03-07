@@ -1,4 +1,3 @@
-
 const { login, create, findUserByEmail, findUserById, updateUserById, destroyUser } = require('../services/user.service');
 
 const loginUser = async (req, res, _next) => {

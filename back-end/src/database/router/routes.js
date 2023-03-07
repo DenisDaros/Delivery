@@ -1,6 +1,6 @@
 const express = require('express');
 const userController = require('../controller/user.controller')
-const productsController = require('../controller/product.controller');
+const productsController = require('../controller/products.controller');
 const sellerController = require('../controller/seller.controller')
 const salesController = require('../controller/sales.controller');
 
@@ -22,7 +22,7 @@ routers.get('/products/:id', validateJWT, productsController.getProductsById);
 routers.put('/products/:id', validateJWT, productsController.putProduct);
 routers.delete('/products/:id', validateJWT, productsController.deleteProduct);
 
-routers.get('/sellers', sellerController.sellers);
+routers.get('/sellers', validateJWT, sellerController.sellers);
 
 routers.post('/sales', validateJWT, salesController.postSales);
 routers.get('/sales', validateJWT, salesController.getSales);
