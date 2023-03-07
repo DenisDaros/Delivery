@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AppContext from '../context/AppContext';
 import '../styles/components/CardProduct.css';
 
-function CardProduct({ price, name, img, key }) {
+function CardProduct({ price, name, img, index }) {
   const [numProduct, setnumProduct] = useState(0);
   const params = useContext(AppContext);
 
@@ -11,12 +11,11 @@ function CardProduct({ price, name, img, key }) {
     params.setCart(0);
   }, []);
 
-  // useEffect(() => {
-  //   params.setCartItens([...params.cartItens, {
-  //     name,
-  //     qnt: numProduct,
-  //     subTotal: (Number(price) * numProduct).toFixed(2) }]);
-  // }, [numProduct]);
+  useEffect(() => {
+    const newObj = params.cartItens.filter((item) => (item.name !== name));
+    params.setCartItens([...newObj,
+      { name, qnt: numProduct, subTotal: price }]);
+  }, [numProduct]);
 
   const rmValue = (newValeu) => {
     const priceConvert = newValeu.replace(',', '.');
@@ -34,7 +33,6 @@ function CardProduct({ price, name, img, key }) {
     const result = (Number(params.cart) + Number(priceConvert));
     params.setCart(result.toFixed(2));
     setnumProduct(Number(numProduct) + 1);
-    // params.setCartItens([{ name, qnt: numProduct, subTotal: result.toFixed(2) }]);
     return null;
   };
 
@@ -42,26 +40,25 @@ function CardProduct({ price, name, img, key }) {
     const itemValue = Number(value) * Number(price.replace(',', '.'));
     const cartValue = itemValue;
     params.setCart(cartValue.toFixed(2));
-    // params.setCartItens([{ name, qnt: Number(value), subTotal: cartValue.toFixed(2) }]);
     setnumProduct(value);
   };
 
   return (
     <div className="card-container">
-      <h3 data-testid={ `customer_products__element-card-price-${key}` }>{ price }</h3>
+      <h3 data-testid={ `customer_products__element-card-price-${index}` }>{ price }</h3>
       <div className="img-container">
         <img
           className="card-img"
           src={ img }
           alt={ name }
-          data-testid={ `customer_products__img-card-bg-image-${key}` }
+          data-testid={ `customer_products__img-card-bg-image-${index}` }
         />
       </div>
-      <p data-testid={ `customer_products__element-card-title-${key}` }>{ name }</p>
+      <p data-testid={ `customer_products__element-card-title-${index}` }>{ name }</p>
       <div className="container-buttons">
         <button
           onClick={ () => rmValue(price) }
-          data-testid={ `customer_products__button-card-rm-item-${key}` }
+          data-testid={ `customer_products__button-card-rm-item-${index}` }
           className="buttons"
           type="button"
         >
@@ -72,11 +69,11 @@ function CardProduct({ price, name, img, key }) {
           type="number"
           value={ numProduct }
           onChange={ handleChange }
-          data-testid={ `customer_products__input-card-quantity-${key}` }
+          data-testid={ `customer_products__input-card-quantity-${index}` }
         />
         <button
           onClick={ () => addValue(price) }
-          data-testid={ `customer_products__button-card-add-item-${key}` }
+          data-testid={ `customer_products__button-card-add-item-${index}` }
           className="buttons"
           type="button"
         >
@@ -91,7 +88,7 @@ CardProduct.propTypes = {
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
-  key: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default CardProduct;

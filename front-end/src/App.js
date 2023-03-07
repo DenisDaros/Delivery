@@ -6,6 +6,7 @@ import Cadastro from './pages/Cadastro';
 import Products from './pages/Produtos';
 import Vendedor from './pages/Vendedor';
 import AppProvider from './context/AppProvider';
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path="/login" element={ <Login /> } />
+            <Route exact path="/customer/checkout" element={ <Checkout /> } />
             <Route exact path="/customer/products" element={ <Products /> } />
             <Route exact path="/register" element={ <Cadastro /> } />
             <Route exact path="/" element={ <Navigate to="/login" /> } />

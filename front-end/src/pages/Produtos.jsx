@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import Request from '../services/request';
 import Header from '../components/Header';
@@ -9,6 +10,8 @@ import '../styles/components/Product.css';
 function Products() {
   const params = useContext(AppContext);
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
 
   const productsApi = async () => {
     try {
@@ -23,12 +26,12 @@ function Products() {
     productsApi();
   }, []);
 
-  const cardProducts = products.map((product, index) => {
+  const cardProducts = products.map((product) => {
     const { name, price, urlImage, id } = product;
     return (
       <CardProduct
         key={ id }
-        index={ index }
+        index={ id }
         img={ urlImage }
         name={ name }
         price={ price.replace('.', ',') }
@@ -36,10 +39,11 @@ function Products() {
     );
   });
 
+  const isDisabled = params.cart === 0;
+
   return (
     <div className="container-page">
       <Header />
-      {/* { console.log(params.cartItens) } */}
       <div className="container-cards-render">
         {
           (products.length !== 0)
@@ -54,13 +58,16 @@ function Products() {
           className="car-button"
           type="button"
           data-testid="customer_products__button-cart"
+          onClick={ () => navigate('/customer/checkout') }
+          disabled={ isDisabled }
         >
-          <span data-testid="customer_products__checkout-bottom-value">
+          <span>
             Ver Carrinho: R$
-            {' '}
-            {
-              localStorage.saveData('cart', String(params.cart).replace('.', ','))
-            }
+          </span>
+          {
+            localStorage.saveData('cart', String(params.cart).replace('.', ','))
+          }
+          <span data-testid="customer_products__checkout-bottom-value">
             {
               String(params.cart).replace('.', ',')
             }

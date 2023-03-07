@@ -1,8 +1,7 @@
-const { Products } = require('../models');
+const { Products }  = require('../models');
 
 const findProducts = async () => {
   const products = await Products.findAll();
-
   return { status: 200, message: products };
 };
 

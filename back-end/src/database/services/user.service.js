@@ -1,3 +1,4 @@
+
 const { User } = require('../models');
 const { generateToken } = require('../auth/generateToken');
 const md5 = require('md5');
