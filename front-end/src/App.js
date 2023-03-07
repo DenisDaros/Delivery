@@ -7,6 +7,7 @@ import Products from './pages/Produtos';
 import Vendedor from './pages/Vendedor';
 import AppProvider from './context/AppProvider';
 import Checkout from './pages/Checkout';
+import Adm from './pages/Adm';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/register" element={ <Cadastro /> } />
             <Route exact path="/" element={ <Navigate to="/login" /> } />
             <Route exact path="/seller/orders" element={ <Vendedor /> } />
+            <Route exact path="/admin/manage" element={ <Adm /> } />
           </Routes>
         </BrowserRouter>
       </AppProvider>

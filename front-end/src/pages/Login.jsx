@@ -33,11 +33,10 @@ function Login() {
         navigate('/seller/orders');
       }
       if (response.token && response.role === 'customer') {
-        console.log(response);
         navigate('/customer/products');
       }
-      if (response.role === 'admin') {
-        navigate('');
+      if (response.role === 'administrator') {
+        navigate('/admin/manage');
       }
     } catch (error) {
       setFailedTryLogin(true);

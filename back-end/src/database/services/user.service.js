@@ -25,13 +25,13 @@ const login = async (email, password) => {
 };
 
 const create = async (newUser) => {
-  const { name, email, password } = newUser;
+  const { name, email, password, role } = newUser;
   const codPass = md5(password);
   const user = await User.findOne({ where: { name, email } });
 
   if (!user) return { status: 409, message: 'Invalid Fields' };
 
-  const createNewUser = await User.create({ email, name, password: codPass });
+  const createNewUser = await User.create({ email, name, password: codPass, role });
   const { password: _password, ...userWithoutPassword } = createNewUser.dataValues;
   const token = generateToken(userWithoutPassword);
 
