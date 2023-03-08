@@ -32,7 +32,7 @@ function Login() {
       if (response.role === 'seller') {
         navigate('/seller/orders');
       }
-      if (response.token && response.role === 'customer') {
+      if (response.role === 'customer') {
         navigate('/customer/products');
       }
       if (response.role === 'administrator') {

@@ -27,8 +27,9 @@ function Cadastro() {
 
     try {
       const response = await Request.requestLogin('/register', { email, name, password });
-      console.log(response);
-      Request.setToken(response);
+      Request.setToken(response.token);
+
+      localStorage.saveData('user', response);
 
       navigate('/customer/products');
     } catch (error) {
@@ -44,9 +45,9 @@ function Cadastro() {
       <p>Nome</p>
       <input
         data-testid="common_register__input-name"
-        type="email"
-        placeholder="email@trybeer.com.br"
-        name="emailInput"
+        type="name"
+        placeholder="Seu nome aqui"
+        name="nameInput"
         value={ name }
         onChange={ ({ target: { value } }) => setName(value) }
       />
