@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Request from '../services/request';
+import localStorage from '../services/localStorage';
 
 function Cadastro() {
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -24,17 +25,18 @@ function Cadastro() {
 
   const register = async (event) => {
     event.preventDefault();
+    const response = await Request.requestLogin('/register', { email, name, password });
+    Request.setToken(response.token);
+    localStorage.saveData('userId', response.id);
+    delete response.id;
+    localStorage.saveData('user', response);
+    localStorage.saveData('cart', 0);
+    navigate('/customer/products');
 
-    try {
-      const response = await Request.requestLogin('/register', { email, name, password });
-      Request.setToken(response.token);
+    localStorage.saveData('user', response);
 
-      localStorage.saveData('user', response);
-
-      navigate('/customer/products');
-    } catch (error) {
-      setFailedTryLogin(true);
-    }
+    setFailedTryLogin(true);
+    navigate('/customer/products');
   };
 
   const isDisabled = validateLoginInputs();
