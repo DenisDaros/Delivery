@@ -5,7 +5,7 @@ const postSales = async (req, res) => {
   
     const saleCreated = await salesService.createSale(saleData);
     
-    return res.status(201).json(saleCreated);
+    return res.status(201).json(saleCreated.id);
   };
 
 const getSales = async (_req, res) => {
