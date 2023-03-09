@@ -6,20 +6,23 @@
   flex-direction:column;
   height: 266.21px;
   margin: 5px;
-  height: 230px;
-  width: 180px;
-  font-size: 12px;
+  padding: 0%;
+  width: 163.35px;
 }
 
 .img-container {
   background-position: center;
   background-size: cover;
-  width: 50%;
+  height: 134.85px;
+  width: 100%;
 }
 
 .card-img {
-  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 100%;
   object-fit: cover;
+  width: 100%;
 }
 
 .container-buttons {

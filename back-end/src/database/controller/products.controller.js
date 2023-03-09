@@ -1,5 +1,5 @@
 const { findProducts, findProductById, updateProductById,
-   destroyProduct, createProduct } = require('../services/product.service');
+   destroyProduct, createProduct } = require('../services/products.service');
 
 const getProducts = async (_req, res) => {
   const result = await findProducts();

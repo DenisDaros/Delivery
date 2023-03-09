@@ -8,6 +8,7 @@ function Login() {
   const PASSWORD_MIN_LENGTH = 5;
 
   const navigate = useNavigate();
+  // const params = useContext(AppContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +31,16 @@ function Login() {
       delete response.id;
       localStorage.saveData('user', response);
       localStorage.saveData('cart', 0);
-      navigate('/customer/products');
+      if (response.role === 'seller') {
+        navigate('/seller/orders');
+      }
+      if (response.token && response.role === 'customer') {
+        console.log(response);
+        navigate('/customer/products');
+      }
+      if (response.role === 'admin') {
+        navigate('');
+      }
     } catch (error) {
       setFailedTryLogin(true);
     }

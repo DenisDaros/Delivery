@@ -3,7 +3,8 @@ const { findUserByEmail } = require('../services/user.service');
 
 require('dotenv/config');
 
-const secret = process.env.JWT_SECRET || 'secret_key';
+const secret = require("fs")
+  .readFileSync("./jwt.evaluation.key", { encoding: "utf-8" }).trim();
 
 const validateJWT = async (req, res, next) => {
   try {
