@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { findUserByEmail } = require('../services/user.service');
+const path = require('path');
+const fs = require('fs');
 
 require('dotenv/config');
 
-const secret = require("fs")
-  .readFileSync("./jwt.evaluation.key", { encoding: "utf-8" }).trim();
+const secret = fs.readFileSync(path.resolve(__dirname, "../../../jwt.evaluation.key"), { encoding: "utf-8" })
 
 const validateJWT = async (req, res, next) => {
   try {
@@ -14,7 +15,7 @@ const validateJWT = async (req, res, next) => {
 
     const decoded = jwt.verify(token, secret);
 
-    const { email } = decoded.data.email;
+    const email = decoded.email;
 
     const user = await findUserByEmail(email);
 

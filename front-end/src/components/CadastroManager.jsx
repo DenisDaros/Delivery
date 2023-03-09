@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Request from '../services/request';
+import localStorage from '../services/localStorage';
 
 function CadastroManager() {
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -21,15 +22,22 @@ function CadastroManager() {
      && isNameValid;
     return !areAllInputsValid;
   };
-
   const register = async (event) => {
     event.preventDefault();
-
+    const token = localStorage.getData('user');
     try {
       const response = await Request
-        .requestLogin('/admin/manage/register', { email, name, password, role });
+        .requestLogin2(
+          '/admin/manage/register',
+          { email, name, password, role },
+          token.token,
+        );
 
-      Request.setToken(response.token);
+      // Request.setToken(response.token);
+      setName('');
+      setPassword('');
+      setEmail('');
+      setRole('seller');
     } catch (error) {
       setFailedTryLogin(true);
     }
