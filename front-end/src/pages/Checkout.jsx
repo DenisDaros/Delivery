@@ -20,7 +20,6 @@ function Checkout() {
   const postSellers = async (obj) => {
     try {
       const response = await Request.postData('/sales', obj);
-      console.log(response);
       return navigate(`/customer/orders/${response}`);
     } catch (error) {
       console.log(error);
@@ -43,7 +42,6 @@ function Checkout() {
         return null;
       });
       setProducts(arr);
-      console.log(arr);
       return null;
     };
     productsOnCart();
@@ -67,6 +65,7 @@ function Checkout() {
         qnt={ qntNumber }
         unitValue={ subTotal }
         value={ value }
+        label="checkout"
       />
     );
   });
@@ -81,7 +80,7 @@ function Checkout() {
       deliveryAddress: adress,
       deliveryNumber: number,
     };
-    console.log(salle);
+    localStore.saveData('order', salle);
     await postSellers(salle);
     return null;
   };
@@ -116,12 +115,14 @@ function Checkout() {
             cart
           }
         </table>
-        <h1>Total: R$</h1>
-        <h1
-          data-testid="customer_checkout__element-order-total-price"
-        >
-          { params.cart.replace('.', ',') }
-        </h1>
+        <div>
+          <h1>Total: R$</h1>
+          <h1
+            data-testid="customer_checkout__element-order-total-price"
+          >
+            { params.cart.replace('.', ',') }
+          </h1>
+        </div>
         <div />
         <div>
           { seller }

@@ -28,7 +28,6 @@ function Cadastro() {
 
     try {
       const response = await Request.requestLogin('/register', { email, name, password });
-      console.log(response);
       Request.setToken(response.token);
       localStorage.saveData('userId', response.id);
       delete response.id;
