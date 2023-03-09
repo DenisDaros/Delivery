@@ -1,4 +1,4 @@
-const salesService  = require('../services/sales.service');
+const salesService = require('../services/sales.service');
 
 const postSales = async (req, res) => {
     const saleData = req.body;
@@ -28,7 +28,7 @@ const patchSale = async (req, res) => {
     const data = req.body;
     
     const updated = await salesService.updateSale(id, data);
-    if(!updated) return res.status(404).json({ message: 'Not found' });
+    if (!updated) return res.status(404).json({ message: 'Not found' });
     
     return res.status(200).json(updated);
 };
@@ -37,7 +37,7 @@ const deleteSale = async (req, res) => {
     const { id } = req.params;
 
     const removed = await salesService.destroySale(id);
-    if(!removed) return res.status(404).json({ message: 'Not found' });
+    if (!removed) return res.status(404).json({ message: 'Not found' });
 
     return res.status(204).json();
 };
