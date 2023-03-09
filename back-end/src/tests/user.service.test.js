@@ -17,7 +17,7 @@ describe('Testa user', function () {
         email: 'xablu@trybe.com',
       });
 
-      expect(response).to.deep.equal(404);
+      expect(response).to.deep.equal(null);
     });
   });
 
