@@ -10,6 +10,7 @@ function CadastroManager() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
+  const [failedTryLogin, setFailedTryLogin] = useState(false);
 
   const validateLoginInputs = () => {
     const isEmailValid = EMAIL_REGEX.test(email);
@@ -26,9 +27,9 @@ function CadastroManager() {
 
     try {
       const response = await Request
-        .requestLogin('/register/admin/manage', { email, name, password, role });
-      console.log(response);
-      Request.setToken(response);
+        .requestLogin('/admin/manage/register', { email, name, password, role });
+
+      Request.setToken(response.token);
     } catch (error) {
       setFailedTryLogin(true);
     }
@@ -42,9 +43,9 @@ function CadastroManager() {
       <p>Nome</p>
       <input
         data-testid="admin_manage__input-name"
-        type="email"
-        placeholder="email@trybeer.com.br"
-        name="emailInput"
+        type="name"
+        placeholder="Seu nome aqui"
+        name="nameInput"
         value={ name }
         onChange={ ({ target: { value } }) => setName(value) }
       />
@@ -70,12 +71,12 @@ function CadastroManager() {
       <p>Tipo</p>
       <select
         data-testid="admin_manage__select-role"
-        name="type"
+        name="role"
         onChange={ ({ target: { value } }) => setRole(value) }
       >
         <option value="seller">Vendedor</option>
         <option value="customer">Cliente</option>
-        <option value="administrator" selected="selected">Administrator</option>
+        <option selected value="administrator">Administrador</option>
       </select>
       <button
         data-testid="admin_manage__button-register"
@@ -85,6 +86,18 @@ function CadastroManager() {
       >
         Cadastrar
       </button>
+      {
+        (failedTryLogin)
+          ? (
+            <p data-testid="admin_manage__element-invalid-register">
+              {
+                `O endereço de e-mail ou nome já existem.
+                    Por favor, tente novamente.`
+              }
+            </p>
+          )
+          : null
+      }
     </form>
   );
 }

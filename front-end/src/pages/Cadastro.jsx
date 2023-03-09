@@ -25,18 +25,21 @@ function Cadastro() {
 
   const register = async (event) => {
     event.preventDefault();
-    const response = await Request.requestLogin('/register', { email, name, password });
-    Request.setToken(response.token);
-    localStorage.saveData('userId', response.id);
-    delete response.id;
-    localStorage.saveData('user', response);
-    localStorage.saveData('cart', 0);
-    navigate('/customer/products');
 
-    localStorage.saveData('user', response);
+    try {
+      const response = await Request.requestLogin('/register', { email, name, password });
 
-    setFailedTryLogin(true);
-    navigate('/customer/products');
+      Request.setToken(response.token);
+
+      localStorage.saveData('userId', response.id);
+      delete response.id;
+      localStorage.saveData('user', response);
+      localStorage.saveData('cart', 0);
+
+      navigate('/customer/products');
+    } catch (error) {
+      setFailedTryLogin(true);
+    }
   };
 
   const isDisabled = validateLoginInputs();
