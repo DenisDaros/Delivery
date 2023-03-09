@@ -7,19 +7,23 @@ const api = axios.create({
 const setToken = (token) => {
   api.defaults.headers.common.Authorization = token;
 };
+
 const requestLogin = async (endpoint, body) => {
   const { data } = await api.post(endpoint, body);
+
   return data;
 };
 
 const requestData = async (endpoint) => {
   const { data } = await api.get(endpoint);
+
   return data;
 };
 
-const requestLogin2 = async (endpoint, body, token) => {
+const requestLoginManager = async (endpoint, body, token) => {
   const { data } = await api.post(endpoint, body, {
     headers: { Authorization: token } });
+
   return data;
 };
 
@@ -27,5 +31,5 @@ export default {
   setToken,
   requestData,
   requestLogin,
-  requestLogin2,
+  requestLoginManager,
 };

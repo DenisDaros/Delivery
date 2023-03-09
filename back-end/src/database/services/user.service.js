@@ -4,7 +4,6 @@ const md5 = require('md5');
 
 const login = async (email, password) => {
   const user = await User.findOne({ where: { email } });
-
   if (!user) return { status: 404, message: "Not found" };
 
   const DBPassword = user.dataValues.password;

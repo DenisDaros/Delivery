@@ -7,9 +7,9 @@ function CadastroManager() {
   const PASSWORD_MIN_LENGTH = 5;
   const NAME_MIN_LENGTH = 12;
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [role, setRole] = useState('seller');
   const [failedTryLogin, setFailedTryLogin] = useState(false);
 
@@ -24,20 +24,21 @@ function CadastroManager() {
   };
   const register = async (event) => {
     event.preventDefault();
-    const token = localStorage.getData('user');
+
+    const user = localStorage.getData('user');
+
     try {
       const response = await Request
-        .requestLogin2(
+        .requestLoginManager(
           '/admin/manage/register',
           { email, name, password, role },
-          token.token,
+          user.token,
         );
-
-      // Request.setToken(response.token);
       setName('');
-      setPassword('');
       setEmail('');
-      setRole('seller');
+      setPassword('');
+
+      return response;
     } catch (error) {
       setFailedTryLogin(true);
     }
