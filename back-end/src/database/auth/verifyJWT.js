@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { findUserByEmail } = require('../services/user.service');
 
+
 require('dotenv/config');
 
 const secret = process.env.JWT_SECRET || 'secret_key';
