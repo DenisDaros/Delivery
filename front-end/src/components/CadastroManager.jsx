@@ -9,7 +9,7 @@ function CadastroManager() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('seller');
   const [failedTryLogin, setFailedTryLogin] = useState(false);
 
   const validateLoginInputs = () => {
@@ -73,10 +73,11 @@ function CadastroManager() {
         data-testid="admin_manage__select-role"
         name="role"
         onChange={ ({ target: { value } }) => setRole(value) }
+        defaultValue={ role }
       >
         <option value="seller">Vendedor</option>
         <option value="customer">Cliente</option>
-        <option selected value="administrator">Administrador</option>
+        <option value="administrator">Administrador</option>
       </select>
       <button
         data-testid="admin_manage__button-register"

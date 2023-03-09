@@ -13,7 +13,9 @@ const login = async (email, password) => {
   if (HashPassword !== DBPassword) return { status: 401, message: "Incorrect password" };
 
   const { password: _password, ...userWithoutPassword } = user.dataValues;
+
   const token = generateToken(userWithoutPassword);
+  
   return {
     status: 200,
     message: {
@@ -50,7 +52,7 @@ const create = async (newUser) => {
       name: createNewUser.name,
       email: createNewUser.email,
       role: createNewUser.role,
-      token: token
+      token
     }
   };
 }
