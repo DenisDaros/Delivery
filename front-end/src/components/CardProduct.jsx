@@ -8,13 +8,9 @@ function CardProduct({ price, name, img, index }) {
   const params = useContext(AppContext);
 
   useEffect(() => {
-    params.setCart(0);
-  }, []);
-
-  useEffect(() => {
     const newObj = params.cartItens.filter((item) => (item.name !== name));
     params.setCartItens([...newObj,
-      { name, qnt: numProduct, subTotal: price }]);
+      { id: index, name, qnt: numProduct, subTotal: price }]);
   }, [numProduct]);
 
   const rmValue = (newValeu) => {

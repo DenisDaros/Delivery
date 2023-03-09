@@ -1,7 +1,7 @@
-const { findProducts, findProductById, updateProductById, destroyProduct, createProduct } = require('../services/products.service');
+const { findProducts, findProductById, updateProductById,
+   destroyProduct, createProduct } = require('../services/products.service');
 
 const getProducts = async (_req, res) => {
-  console.log('chamou')
   const result = await findProducts();
   
   return res.status(result.status).json(result.message);
@@ -13,7 +13,7 @@ const getProductsById = async (req, res) => {
   const product = await findProductById(id);
 
   return res.status(product.status).json(product.message);
-}
+};
 
 const putProduct = async (req, res) => {
   const { id } = req.params;
@@ -24,7 +24,7 @@ const putProduct = async (req, res) => {
   return res.status(updated.status).json(updated.message);
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req) => {
   const { id } = req.params;
 
   const removed = await destroyProduct(id);
@@ -38,7 +38,7 @@ const postProduct = async (req, res) => {
   const created = await createProduct(product);
 
   return res.status(created.status).json(created.message);
-}
+};
 
 module.exports = {
   getProducts,

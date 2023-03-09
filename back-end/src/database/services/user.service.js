@@ -17,7 +17,9 @@ const login = async (email, password) => {
   const token = generateToken(userWithoutPassword);
   return { 
     status: 200, 
-    message: { name: user.name, 
+    message: { 
+    id: user.id,
+    name: user.name, 
     email: user.email,
     role: user.role, 
     token: token
@@ -29,20 +31,29 @@ const create = async (newUser) => {
   const codPass = md5(password);
   const user = await User.findOne({ where: { name, email } });
 
-  if (!user) return { status: 409, message: 'Invalid Fields' };
+  if (user) return { status: 409, message: 'Invalid Fields' };
 
-  const createNewUser = await User.create({ email, name, password: codPass });
+  const createNewUser = await User.create({ email, name, password: codPass, role: 'customer' });
   const { password: _password, ...userWithoutPassword } = createNewUser.dataValues;
   const token = generateToken(userWithoutPassword);
 
-  return { status: 201, message: token };
-}
+  return { 
+    status: 201, 
+    message: { 
+    id: createNewUser.id,
+    name: createNewUser.name, 
+    email: createNewUser.email,
+    role: createNewUser.role, 
+    token: token
+  } };
+};
 
 const findUserByEmail = async (email) => {
+  console.log(email)
   const user = await User.findOne({ where: { email }, exclude: ['password'] });
   if (!user) return { status: 400, message: 'Error' };
 
-  return { status: 200, message: user.name };
+  return { status: 200, message: user.id };
 };
 
 const findUserById = async (id) => {
