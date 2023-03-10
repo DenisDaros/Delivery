@@ -20,8 +20,14 @@ const requestData = async (endpoint) => {
   return data;
 };
 
+const postData = async (endpoint, body) => {
+  const { data } = await api.post(endpoint, body);
+  return data;
+};
+
 export default {
   setToken,
   requestData,
   requestLogin,
+  postData,
 };

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-// import { useNavigate } from 'react-router-dom';
+import localStore from '../services/localStorage';
 import Header from '../components/Header';
 import Table from '../components/Table';
 import Request from '../services/request';
@@ -9,39 +10,89 @@ import Address from '../components/ Address';
 function Checkout() {
   const params = useContext(AppContext);
   const [sellers, setSellers] = useState([]);
+  const [products, setProducts] = useState();
+  const navigate = useNavigate();
 
   const getSellers = () => Request.requestData('/sellers')
     .then((response) => setSellers(response))
     .catch((error) => console.log(error));
 
+  const postSellers = async (obj) => {
+    try {
+      const response = await Request.postData('/sales', obj);
+      return navigate(`/customer/orders/${response}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getSellers();
   }, []);
 
+  useEffect(() => {
+    const productsOnCart = () => {
+      const arr = [];
+      params.cartItens.map((item) => {
+        const newObj = {
+          productId: item.id,
+          quantity: item.qnt,
+        };
+        arr.push(newObj);
+        return null;
+      });
+      setProducts(arr);
+      return null;
+    };
+    productsOnCart();
+  }, [params.cartItens]);
+
+  const MENOSUM = -1;
+  let contador = MENOSUM;
+
   const cart = params.cartItens.map((item, index) => {
     if (item.qnt === 0) return null;
-    const { name, qnt, subTotal } = item;
+    contador += 1;
+    const { name, qnt, subTotal, id } = item;
     const qntNumber = (Number(qnt));
     const value = Number(subTotal.replace(',', '.'));
     return (
       <Table
+        id={ id }
         key={ index }
-        index={ index + 1 }
+        index={ contador }
         name={ name }
         qnt={ qntNumber }
         unitValue={ subTotal }
         value={ value }
+        label="checkout"
       />
     );
   });
 
+  const postSalle = async (sellerId, adress, number) => {
+    const userId = localStore.getData('userId');
+    const salle = {
+      userId,
+      sellerId,
+      totalPrice: params.cart,
+      products,
+      deliveryAddress: adress,
+      deliveryNumber: number,
+    };
+    localStore.saveData('order', salle);
+    await postSellers(salle);
+    return null;
+  };
+
   const seller = sellers.map((item, index) => {
-    const { name } = item;
-    console.log(name);
+    const { name, id } = item;
     return (
       <Address
         key={ index }
+        id={ id }
         name={ name }
+        sale={ postSalle }
       />
     );
   });
@@ -51,13 +102,30 @@ function Checkout() {
       <Header />
       <div>
         <h3>Finalizar Pedido</h3>
-        {
-          cart
-        }
-        <h1>{ `Total: R$ ${params.cart}` }</h1>
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor Unitário</th>
+            <th>Sub-total</th>
+            <th>Remover Item</th>
+          </tr>
+          {
+            cart
+          }
+        </table>
+        <div>
+          <h1>Total: R$</h1>
+          <h1
+            data-testid="customer_checkout__element-order-total-price"
+          >
+            { params.cart.replace('.', ',') }
+          </h1>
+        </div>
         <div />
         <div>
-          { seller}
+          { seller }
         </div>
       </div>
     </div>

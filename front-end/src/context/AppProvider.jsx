@@ -6,15 +6,18 @@ export default function AppProvider({ children }) {
   const [user, setUser] = useState({});
   const [cart, setCart] = useState(0);
   const [cartItens, setCartItens] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const context = useMemo(() => ({
+    products,
     cartItens,
     cart,
     user,
     setUser,
     setCart,
     setCartItens,
-  }), [user, cart, cartItens]);
+    setProducts,
+  }), [user, cart, cartItens, products]);
 
   return (
     <AppContext.Provider value={ context }>

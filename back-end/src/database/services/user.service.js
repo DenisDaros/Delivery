@@ -57,10 +57,11 @@ const create = async (newUser) => {
 }
 
 const findUserByEmail = async (email) => {
+  console.log(email)
   const user = await User.findOne({ where: { email }, exclude: ['password'] });
   if (!user) return { status: 400, message: 'Error' };
 
-  return { status: 200, message: user.name };
+  return { status: 200, message: user.id };
 };
 
 const findUserById = async (id) => {

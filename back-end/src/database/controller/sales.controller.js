@@ -1,11 +1,9 @@
-const salesService  = require('../services/sales.service');
+const salesService = require('../services/sales.service');
 
 const postSales = async (req, res) => {
     const saleData = req.body;
-  
     const saleCreated = await salesService.createSale(saleData);
-    
-    return res.status(saleCreated.status).json(saleCreated.message);
+    return res.status(201).json(saleCreated.id);
   };
 
 const getSales = async (_req, res) => {
@@ -25,9 +23,9 @@ const getSaleById = async (req, res) => {
 const patchSale = async (req, res) => {
     const { id } = req.params;
     const data = req.body;
-    
+
     const updated = await salesService.updateSale(id, data);
-    
+    if (!updated) return res.status(404).json({ message: 'Not found' });   
     return res.status(updated.status).json(updated.message);
 };
 
@@ -35,8 +33,9 @@ const deleteSale = async (req, res) => {
     const { id } = req.params;
 
     const removed = await salesService.destroySale(id);
-    
-    return res.status(removed.status).json(removed.message);
+    if (!removed) return res.status(404).json({ message: 'Not found' });
+
+    return res.status(204).json();
 };
 
 module.exports = {
