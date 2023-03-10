@@ -29,13 +29,6 @@ function CadastroManager() {
     Request.setToken(user.token);
 
     try {
-      // const response = await Request
-      //   .requestLoginManager(
-      //     '/admin/manage/register',
-      //     { email, name, password, role },
-      //     user.token,
-      //   );
-
       const response = await Request
         .requestLogin('/admin/manage/register', { email, name, password, role });
 
