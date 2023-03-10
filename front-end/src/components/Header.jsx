@@ -20,8 +20,8 @@ function Header() {
     if (user.role === 'seller') {
       setRole('seller');
     }
-    if (user.role === 'admin') {
-      setRole('admin');
+    if (user.role === 'administrator') {
+      setRole('administrator');
     }
   }
 
@@ -42,14 +42,11 @@ function Header() {
       { (role === 'seller') && (
         <h3 data-testid="customer_products__element-navbar-link-orders">PEDIDOS</h3>
       )}
-      {/* { (role === 'admin') && (
-        <>
-          <h3 data-testid="customer_products__element-navbar-link-products">PRODUTOS</h3>
-          <h3 data-testid="customer_products__element-navbar-link-orders">
-            MEUS PEDIDOS
-          </h3>
-        </>
-      )} */}
+      { (role === 'administrator') && (
+        <h3 data-testid="customer_products__element-navbar-link-orders">
+          GERENCIAR USUÁRIOS
+        </h3>
+      )}
       <h3 data-testid="customer_products__element-navbar-user-full-name">
         { user.name }
       </h3>

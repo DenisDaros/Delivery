@@ -1,42 +1,42 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Request from '../services/request';
 import localStorage from '../services/localStorage';
 
-function Cadastro() {
+function CadastroManager() {
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
   const PASSWORD_MIN_LENGTH = 5;
   const NAME_MIN_LENGTH = 12;
 
-  const navigate = useNavigate();
-
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [role, setRole] = useState('seller');
   const [failedTryLogin, setFailedTryLogin] = useState(false);
 
   const validateLoginInputs = () => {
     const isEmailValid = EMAIL_REGEX.test(email);
     const isPasswordValid = password.length > PASSWORD_MIN_LENGTH;
     const isNameValid = name.length >= NAME_MIN_LENGTH;
-    const areAllInputsValid = isEmailValid && isPasswordValid && isNameValid;
+    const areAllInputsValid = isEmailValid
+     && isPasswordValid
+     && isNameValid;
     return !areAllInputsValid;
   };
-
   const register = async (event) => {
     event.preventDefault();
 
+    const user = localStorage.getData('user');
+    Request.setToken(user.token);
+
     try {
-      const response = await Request.requestLogin('/register', { email, name, password });
+      const response = await Request
+        .requestLogin('/admin/manage/register', { email, name, password, role });
 
-      Request.setToken(response.token);
+      setName('');
+      setEmail('');
+      setPassword('');
 
-      localStorage.saveData('userId', response.id);
-      delete response.id;
-      localStorage.saveData('user', response);
-      localStorage.saveData('cart', 0);
-
-      navigate('/customer/products');
+      return response;
     } catch (error) {
       setFailedTryLogin(true);
     }
@@ -46,10 +46,10 @@ function Cadastro() {
 
   return (
     <form>
-      <h1>Cadastro</h1>
+      <h1>Cadastrar novo usuário</h1>
       <p>Nome</p>
       <input
-        data-testid="common_register__input-name"
+        data-testid="admin_manage__input-name"
         type="name"
         placeholder="Seu nome aqui"
         name="nameInput"
@@ -58,7 +58,7 @@ function Cadastro() {
       />
       <p>Email</p>
       <input
-        data-testid="common_register__input-email"
+        data-testid="admin_manage__input-email"
         type="email"
         placeholder="email@trybeer.com.br"
         name="emailInput"
@@ -67,7 +67,7 @@ function Cadastro() {
       />
       <p>Senha</p>
       <input
-        data-testid="common_register__input-password"
+        data-testid="admin_manage__input-password"
         type="password"
         placeholder="*******"
         name="passwordInput"
@@ -75,8 +75,19 @@ function Cadastro() {
         onChange={ ({ target: { value } }) => setPassword(value) }
       />
       <br />
+      <p>Tipo</p>
+      <select
+        data-testid="admin_manage__select-role"
+        name="role"
+        onChange={ ({ target: { value } }) => setRole(value) }
+        defaultValue={ role }
+      >
+        <option value="seller">Vendedor</option>
+        <option value="customer">Cliente</option>
+        <option value="administrator">Administrador</option>
+      </select>
       <button
-        data-testid="common_register__button-register"
+        data-testid="admin_manage__button-register"
         type="submit"
         onClick={ (event) => register(event) }
         disabled={ isDisabled }
@@ -86,7 +97,7 @@ function Cadastro() {
       {
         (failedTryLogin)
           ? (
-            <p data-testid="common_register__element-invalid_register">
+            <p data-testid="admin_manage__element-invalid-register">
               {
                 `O endereço de e-mail ou nome já existem.
                     Por favor, tente novamente.`
@@ -99,4 +110,4 @@ function Cadastro() {
   );
 }
 
-export default Cadastro;
+export default CadastroManager;

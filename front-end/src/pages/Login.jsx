@@ -26,20 +26,22 @@ function Login() {
 
     try {
       const response = await Request.requestLogin('/login', { email, password });
+
       Request.setToken(response.token);
+
       localStorage.saveData('userId', response.id);
       delete response.id;
       localStorage.saveData('user', response);
       localStorage.saveData('cart', 0);
+
       if (response.role === 'seller') {
         navigate('/seller/orders');
       }
-      if (response.token && response.role === 'customer') {
-        console.log(response);
+      if (response.role === 'customer') {
         navigate('/customer/products');
       }
-      if (response.role === 'admin') {
-        navigate('');
+      if (response.role === 'administrator') {
+        navigate('/admin/manage');
       }
     } catch (error) {
       setFailedTryLogin(true);
