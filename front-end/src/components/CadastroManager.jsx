@@ -26,14 +26,19 @@ function CadastroManager() {
     event.preventDefault();
 
     const user = localStorage.getData('user');
+    Request.setToken(user.token);
 
     try {
+      // const response = await Request
+      //   .requestLoginManager(
+      //     '/admin/manage/register',
+      //     { email, name, password, role },
+      //     user.token,
+      //   );
+
       const response = await Request
-        .requestLoginManager(
-          '/admin/manage/register',
-          { email, name, password, role },
-          user.token,
-        );
+        .requestLogin('/admin/manage/register', { email, name, password, role });
+
       setName('');
       setEmail('');
       setPassword('');

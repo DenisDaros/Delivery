@@ -13,9 +13,9 @@ const validateJWT = async (req, res, next) => {
 
     if (!token) return res.status(403).json({ message: 'No credentials sent!' });
 
-    const decoded = jwt.verify(token, secret);
+    const payload = jwt.verify(token, secret);
 
-    const email = decoded.email;
+    const email = payload.email;
 
     const user = await findUserByEmail(email);
 

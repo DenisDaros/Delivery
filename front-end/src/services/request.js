@@ -20,16 +20,16 @@ const requestData = async (endpoint) => {
   return data;
 };
 
-const requestLoginManager = async (endpoint, body, token) => {
-  const { data } = await api.post(endpoint, body, {
-    headers: { Authorization: token } });
+// const requestLoginManager = async (endpoint, body, token) => {
+//   const { data } = await api.post(endpoint, body, {
+//     headers: { Authorization: token } });
 
-  return data;
-};
+//   return data;
+// };
 
 export default {
   setToken,
   requestData,
   requestLogin,
-  requestLoginManager,
+  // requestLoginManager,
 };
